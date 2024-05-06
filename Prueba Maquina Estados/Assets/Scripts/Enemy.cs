@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour
                     break;
                     //transform.LookAt(player.transform);
                 }
+                Debug.Log("detectado");
             }
             yield return new WaitForEndOfFrame();
         }
@@ -83,6 +84,8 @@ public class Enemy : MonoBehaviour
                 navMeshAgent.SetDestination(transform.position);
                 navMeshAgent.velocity = Vector3.zero;
                 animator.SetBool("attack", true);
+                Debug.Log("atacando");
+                yield return new WaitForSeconds(3);
             }
             else
             {

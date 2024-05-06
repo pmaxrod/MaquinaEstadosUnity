@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         rb.velocity = (transform.forward * Input.GetAxis("Vertical") * speed) + (transform.right * Input.GetAxis("Horizontal") * speed);
-        transform.Rotate(Vector3.up * Input.GetAxis("Horizontal") * speedRot);
+        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * speedRot);
 
         animator.SetFloat("velocity", rb.velocity.magnitude);
     }
