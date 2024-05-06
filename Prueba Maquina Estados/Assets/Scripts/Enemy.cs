@@ -43,17 +43,10 @@ public class Enemy : MonoBehaviour
                 if (Vector3.Angle(vectorPlayer.normalized, transform.forward) < visionAngle)
                 {
                     StopCoroutine("Patrol");
+                    StartCoroutine("Attack");
+                    break;
                     //transform.LookAt(player.transform);
-                    navMeshAgent.SetDestination(player.position);
                 }
-                else
-                {
-                    StartCoroutine("Patrol");
-                }
-            }
-            else
-            {
-                StartCoroutine("Patrol");
             }
             yield return new WaitForEndOfFrame();
         }
@@ -61,6 +54,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Patrol()
     {
+        navMeshAgent.SetDestination(destination);
         while (true)
         {
             if (Vector3.Distance(transform.position, destination) < 1.5f)
@@ -77,14 +71,24 @@ public class Enemy : MonoBehaviour
     {
         while (true)
         {
-            navMeshAgent.SetDestination(player.position);
-
-            if(Vector3.Distance(transform.position, player.position) < playerAttackDistance)
+            if (Vector3.Distance(transform.position, player.position) > playerDetectionDistance)
             {
-
+                StartCoroutine("Patrol");
+                StartCoroutine("Alert");
+                break;
             }
 
-
+            else if (Vector3.Distance(transform.position, player.position) < playerAttackDistance)
+            {
+                navMeshAgent.SetDestination(transform.position);
+                navMeshAgent.velocity = Vector3.zero;
+                animator.SetBool("attack", true);
+            }
+            else
+            {
+                navMeshAgent.SetDestination(player.position);
+                animator.SetBool("attack", false);
+            }
             yield return new WaitForEndOfFrame();
         }
     }
